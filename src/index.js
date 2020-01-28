@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import promise from 'redux-promise-middleware';
 import reducers from './store';
 
-import AppContainer from './screens/List';
+import AppContainer from './screens/Main';
 
 
 export default function App() {
