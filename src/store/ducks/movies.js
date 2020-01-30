@@ -5,34 +5,36 @@ import 'moment/locale/eu';
 
 // Action Types
 export const Types = {
-  IS_LOADING: 'is_loading',
-  GET_MOVIES_TRENDING_SUCESS: 'get_movies_trending_sucess',
-  GET_MOVIES_POPULAR_SUCESS: 'get_movies_popular_sucess',
-  GET_MOVIES_PLAYED_SUCESS: 'get_movies_played_sucess',
-  GET_MOVIES_UPDATES_SUCESS: 'get_movies_updates_sucess'
+  RESET_CASH_LOAD: 'reset_cash_load',
+  GET_MOVIES_TRENDING: 'get_movies_trending',
+  GET_MOVIES_POPULAR: 'get_movies_popular',
+  GET_MOVIES_UPDATES: 'get_movies_updates',
+  GET_MOVIES_COLLECTED: 'get_movies_collected',
 };
 
 
 // Reducer
 const INITIAL_STATE = {
-  isLoading: false,
-  movies: [],
-
+  cashLoad: 0,
   trendings: [],
   popular: [],
-  played: [],
   updates: [],
+  collected: [],
 };
 
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case Types.GET_MOVIES_TRENDING_SUCESS:
-      return ({ ...state, trendings: action.payload });
-    case Types.GET_MOVIES_POPULAR_SUCESS:
-      return ({ ...state, popular: action.payload });
-    case Types.GET_MOVIES_UPDATES_SUCESS:
-      return ({ ...state, updates: action.payload });
+    case Types.RESET_CASH_LOAD:
+      return ({ ...state, cashLoad: 0 })
+    case Types.GET_MOVIES_TRENDING:
+      return ({ ...state, trendings: action.payload, cashLoad: state.cashLoad + 1 });
+    case Types.GET_MOVIES_POPULAR:
+      return ({ ...state, popular: action.payload, cashLoad: state.cashLoad + 1 });
+    case Types.GET_MOVIES_UPDATES:
+      return ({ ...state, updates: action.payload, cashLoad: state.cashLoad + 1 });
+    case Types.GET_MOVIES_COLLECTED:
+      return ({ ...state, collected: action.payload, cashLoad: state.cashLoad + 1 });
     default:
       return state;
   };
@@ -42,12 +44,12 @@ export default (state = INITIAL_STATE, action) => {
 export const getMovies = () => {
   return async dispatch => {
     try {
+      dispatch({ type: Types.RESET_CASH_LOAD });
       dispatch(getPopularMovies());
       dispatch(getTrendingMovies());
       dispatch(getUpdatesdMovies());
-    } catch (error) {
-      console.log(error)
-    }
+      dispatch(getCollectedMovies());
+    } catch (error) { }
   }
 }
 
@@ -62,9 +64,9 @@ const getTrendingMovies = () => {
           data.push({ movie: item.movie, images: resTmdb.data.backdrops });
         } catch (error) { }
       });
-      dispatch({ type: Types.GET_MOVIES_TRENDING_SUCESS, payload: data });
+      dispatch({ type: Types.GET_MOVIES_TRENDING, payload: data });
     } catch (error) {
-      console.log(error)
+      dispatch({ type: Types.GET_MOVIES_TRENDING, payload: [] });
     }
   };
 }
@@ -78,49 +80,48 @@ const getPopularMovies = () => {
         try {
           const resTmdb = await apiTmdb.get(`${item.ids.tmdb}/images`);
           data.push({ movie: item, images: resTmdb.data.backdrops });
-        } catch (error) {
-        }
+        } catch (error) { }
       });
-      dispatch({ type: Types.GET_MOVIES_POPULAR_SUCESS, payload: data });
+      dispatch({ type: Types.GET_MOVIES_POPULAR, payload: data });
     } catch (error) {
-      console.log(error);
+      dispatch({ type: Types.GET_MOVIES_POPULAR, payload: [] });
     }
   };
 }
 
-// const getMorePlayedMovies = () => {
-//   return async dispatch => {
-//     try {
-//       const resTrakt = await apiTrakt.get('played/weekly');
-//       var data = [];
-//       await asyncForEach(resTrakt.data, async item => {
-//         try {
-//           const resTmdb = await apiTmdb.get(`${item.ids.tmdb}/images`);
-//           data.push({ movie: item, images: resTmdb.data.backdrops });
-//         } catch (error) {
-//         }
-//       });
-//     } catch (error) {
-
-//     }
-//   }
-// }
-
 const getUpdatesdMovies = () => {
   return async dispatch => {
     try {
-      const date = moment().format('L');
+      const date = moment().subtract(7, 'days').calendar();
       const resTrakt = await apiTrakt.get(`movies/updates/${date}`);
       var data = [];
       await asyncForEach(resTrakt.data, async item => {
         try {
           const resTmdb = await apiTmdb.get(`${item.movie.ids.tmdb}/images`);
           data.push({ movie: item.movie, images: resTmdb.data.backdrops });
-        } catch (error) {}
+        } catch (error) { }
       });
-      dispatch({ type: Types.GET_MOVIES_UPDATES_SUCESS, payload: data });
+      dispatch({ type: Types.GET_MOVIES_UPDATES, payload: data });
     } catch (error) {
-      console.log(error);
+      dispatch({ type: Types.GET_MOVIES_UPDATES, payload: [] });
+    }
+  }
+}
+
+const getCollectedMovies = () => {
+  return async dispatch => {
+    try {
+      const resTrakt = await apiTrakt.get(`movies/collected`);
+      var data = [];
+      await asyncForEach(resTrakt.data, async item => {
+        try {
+          const resTmdb = await apiTmdb.get(`${item.movie.ids.tmdb}/images`);
+          data.push({ movie: item.movie, images: resTmdb.data.backdrops });
+        } catch (error) { }
+      });
+      dispatch({ type: Types.GET_MOVIES_COLLECTED, payload: data });
+    } catch (error) {
+      dispatch({ type: Types.GET_MOVIES_COLLECTED, payload: [] });
     }
   }
 }

@@ -11,6 +11,8 @@ import Single from '../Single';
 
 export default function List(props) {
 
+  if (!props.albuns.length) return null;
+
   function renderContent() {
     if (props.horizontal) {
       return (
@@ -19,6 +21,7 @@ export default function List(props) {
             <Album
               {...album}
               key={i}
+              onPress={props.onPressAlbum}
               type={props.type}
             />
           ))}
@@ -27,8 +30,9 @@ export default function List(props) {
       )
     } else {
       return props.albuns.map((album, i) => (
-        <Single 
+        <Single
           {...album}
+          onPress={props.onPressAlbum}
           key={i}
         />
       ));

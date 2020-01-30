@@ -13,7 +13,9 @@ export default function Album(props) {
   function renderContent() {
     if (props.type === 'circle') {
       return (
-        <Circle>
+        <Circle
+          onPress={() => props.onPress(props)}
+        >
           <Image
             uri={props.images.length ? `https://image.tmdb.org/t/p/w500/${props.images[0].file_path}` : ''}
           />
@@ -21,7 +23,9 @@ export default function Album(props) {
       )
     } else if (props.type === 'square') {
       return (
-        <Square >
+        <Square
+          onPress={() => props.onPress(props)}
+        >
           <Image
             uri={props.images.length ? `https://image.tmdb.org/t/p/w500/${props.images[0].file_path}` : ''}
           />

@@ -194,7 +194,6 @@
 				8084A7B3770D19F0CC6DBB78 /* Pods-movies_traktTests.debug.xcconfig */,
 				648211D6F8527A5C0C89E63E /* Pods-movies_traktTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -308,6 +307,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
