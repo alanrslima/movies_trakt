@@ -5,7 +5,7 @@ import {
   Title,
   Button,
   TextButton,
-  Scroll,
+  Tab,
 } from './styles';
 import Album from '../Album';
 
@@ -19,12 +19,15 @@ export default function List(props) {
           <TextButton>Ver todos</TextButton>
         </Button>
       </Header>
-      <Scroll horizontal>
-        <Album />
-        <Album />
-        <Album />
-        <Album />
-      </Scroll>
+      <Tab>
+        {props.albuns.map((album, i) => (
+          <Album
+            key={i}
+            type={props.type}
+          />
+        ))}
+
+      </Tab>
     </Container>
   );
 }

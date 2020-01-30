@@ -1,12 +1,20 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import { Container } from './styles';
+import { 
+  Circle,
+  Square, 
+} from './styles';
 
-export default function Square() {
-  return (
-    <Container >
-      
-    </Container>
-  );
+export default function Album(props) {
+
+  if (props.type === 'circle') {
+    return (
+      <Circle />
+    )
+  } else if (props.type === 'square') {
+    return (
+      <Square />
+    );
+  }
 }

@@ -1,12 +1,19 @@
 import axios from 'axios';
+import env from '~/config/env';
 
-const api = axios.create({
+export const apiTrakt = axios.create({
     baseURL: 'https://api.trakt.tv',
     headers: {
         'Content-type': 'application/json',
         'trakt-api-version': 2,
-        'trakt-api-key': 'dfa55a27c6a61b258356b9513e6e97dfb58eb121c5c81493cff4a780614950bd',
+        'trakt-api-key': env.API_KEY_TRAKT,
     },
 });
 
-export default api;
+
+export const apiTmdb = axios.create({
+    baseURL: 'https://api.themoviedb.org/3/movie',
+    headers: {
+        'Content-type': 'application/json',
+    },
+});

@@ -1,11 +1,11 @@
 import styled from 'styled-components/native';
 
 export const Container = styled.View`
-  margin-top: 30px;
+  margin: 15px 0px;
+  flex: 1;
 `;
 
 export const Header = styled.View`
-  /* flex: 1; */
   flex-direction: row;
   justify-content: space-between;
   margin: 0px 16px;
@@ -26,6 +26,9 @@ export const TextButton = styled.Text`
   font-size: 12px;
 `;
 
-export const Scroll = styled.ScrollView`
-  padding-left: 16px;
+export const Tab = styled.ScrollView.attrs({
+  horizontal: true,
+  showsHorizontalScrollIndicator: false,
+})`
+  padding-left: 11px;
 `;
