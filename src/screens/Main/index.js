@@ -21,6 +21,7 @@ export default function Main() {
   let dispatch = useDispatch();
   let popular = useSelector(state => state.movies.popular);
   let trendings = useSelector(state => state.movies.trendings);
+  let updates = useSelector(state => state.movies.updates);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -51,31 +52,24 @@ export default function Main() {
         >
           <ScrollView style={{ flex: 1 }}>
             <List
+              horizontal
               onPressAlbum={onPressAlbum}
               type="square"
               title="Populares"
               albuns={popular}
             />
             <List
+              horizontal
               type="circle"
               title="Mais assistidos"
               albuns={trendings}
             />
             <List
-              type="square"
               title="Lançamentos"
-              albuns={[1, 2, 3, 4, 5]}
+              albuns={updates}
             />
-            {/* <Single />
-            <Single />
-            <Single />
-            <List
-              type="square"
-              title="Lançamentos"
-              albuns={[1, 2, 3, 4, 5]}
-            /> */}
           </ScrollView>
-          </Animatable.View>
+        </Animatable.View>
       );
     }
   }

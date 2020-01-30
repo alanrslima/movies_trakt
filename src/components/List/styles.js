@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 
 export const Container = styled.View`
   margin: 15px 0px;
-  flex: 1;
+  display: flex;
 `;
 
 export const Header = styled.View`
@@ -15,20 +15,12 @@ export const Title = styled.Text`
   color: #FFF;
   font-size: 18px;
   font-weight: bold;
-`;
-
-export const Button = styled.TouchableOpacity`
-  padding: 10px;
-`;
-
-export const TextButton = styled.Text`
-  color: #FFF;
-  font-size: 12px;
+  margin-bottom: 10px;
 `;
 
 export const Tab = styled.ScrollView.attrs({
   horizontal: true,
   showsHorizontalScrollIndicator: false,
+  contentContainerStyle: { paddingHorizontal: 11 }
 })`
-  padding-left: 11px;
 `;

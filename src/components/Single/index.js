@@ -1,23 +1,25 @@
 import React from 'react';
 
 import {
-  Container,
   Button,
-  Title,
   Album,
-  Description,
+  Title,
+  ContainerTitle
 } from './styles';
 
 export default function Single(props) {
+
   return (
-    <Container>
-      <Button 
-        onPress={props.onPress}
-      >
-        <Title>Titulo</Title>
-        <Album />
-        <Description>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin convallis tellus nec quam molestie, a venenatis tellus aliquam. Fusce in mauris in leo sodales imperdiet vel in arcu</Description>
-      </Button>
-    </Container>
+    <Button
+      onPress={props.onPress}
+    >
+      <Album
+        uri={props.images.length ? `https://image.tmdb.org/t/p/w500/${props.images[0].file_path}` : ''}
+      />
+      <ContainerTitle>
+        <Title>{props.movie.title}</Title>
+
+      </ContainerTitle>
+    </Button>
   );
 }

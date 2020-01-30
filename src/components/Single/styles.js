@@ -1,28 +1,34 @@
 import styled from 'styled-components/native';
 
-export const Container = styled.View`
-  margin: 30px 16px;
-`;
 
 export const Button = styled.TouchableOpacity`
+    margin: 10px 16px;
+    overflow: hidden;
 `;
 
-export const Title = styled.Text`
-  padding-bottom: 10px;
-  color: #FFF;
-  font-size: 18px;
-  font-weight: bold;
-`;
-
-export const Album = styled.View`
+export const Album = styled.Image.attrs(props => ({
+  source: { uri: props.uri }
+}))`
   border-radius: 10px;
-  height: 150px;
+  height: 170px;
+  width: 100%;
   background-color: #CCC;
 `;
 
-export const Description = styled.Text`
+export const ContainerTitle = styled.View`
+  position: absolute;
+  background-color: rgba(0,0,0,0.4);
+  width: 100%;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  padding: 10px;
+`;
+
+export const Title = styled.Text`
   color: #FFF;
-  margin-top: 10px;
+  font-weight: 500;
+  font-size: 14px;
+  text-align: right;
   font-size: 14px;
 `;
 
