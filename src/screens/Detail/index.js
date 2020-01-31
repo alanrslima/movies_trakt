@@ -32,11 +32,11 @@ export default function Detail(props) {
   }
 
   function onPressTrailler() {
-    Linking.openURL(details.about.trailer).catch(err => console.error("Couldn't load page", err));
+    Linking.openURL(details.about.trailer).catch();
   }
 
   function onPressHomepage() {
-    Linking.openURL(details.about.homepage).catch(err => console.error("Couldn't load page", err));
+    Linking.openURL(details.about.homepage).catch();
   }
 
   if (props.data) {
