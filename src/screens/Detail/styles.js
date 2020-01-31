@@ -40,7 +40,10 @@ export const BtnClose = styled.TouchableOpacity`
   background-color: rgba(255,255,255,0.5);
 `;
 
-export const TextBtnClose = styled.Text`
+export const TextBtnClose = styled.Text.attrs({
+  allowFontScaling: false
+})`
+  font-size: 14px;
   color: #000;
   font-weight: 600;
 `;
@@ -52,11 +55,15 @@ export const Image = styled.Image`
   background-color: rgba(255,255,255,0.3);
 `;
 
-export const Title = styled.Text.attrs({
-  allowFontScaling: false
-})`
+export const Title = styled.Text`
   font-size: 20px;
   color: #FFF;
   margin: 16px;
   font-weight: bold;
+`;
+
+export const Description = styled.Text`
+  font-size: 14px;
+  color: #FFF;
+  margin: 0px 16px 10px 16px;
 `;

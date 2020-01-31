@@ -7,3 +7,7 @@ export const Container = styled.SafeAreaView`
   background: #101010;
   padding-bottom: ${getBottomSpace()}px
 `;
+
+export const Scroll = styled.ScrollView`
+  flex: 1;
+`;

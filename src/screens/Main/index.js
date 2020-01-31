@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import {
-  ScrollView,
   ActivityIndicator,
   View,
+  StatusBar,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Animatable from 'react-native-animatable';
 
-import { getMovies } from '~/store/ducks/movies';
+import { getMovies, getMovieDetail } from '~/store/ducks/movies';
 
 import List from '~/components/List';
 import Detail from '~/screens/Detail';
 
 import {
-  Container
+  Container,
+  Scroll,
 } from './styles';
 
 
@@ -26,7 +27,7 @@ export default function Main() {
   let updates = useSelector(state => state.movies.updates);
   let collected = useSelector(state => state.movies.collected);
 
-  let cashLoad = useSelector(state => state.movies.cashLoad);
+  let cashLoadMovies = useSelector(state => state.movies.cashLoadMovies);
 
   const [showDetail, setShowDetail] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState([]);
@@ -35,13 +36,14 @@ export default function Main() {
     dispatch(getMovies());
   }, []);
 
-  function onPressAlbum(movie) {
-    setSelectedMovie(movie);
+  function onPressMovie(item) {
+    dispatch(getMovieDetail(item.movie.id));
+    setSelectedMovie(item);
     setShowDetail(true);
   }
 
   function renderContent() {
-    if (cashLoad !== 4) {
+    if (cashLoadMovies !== 4) {
       return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <ActivityIndicator color='#FFF' size="large" />
@@ -55,17 +57,17 @@ export default function Main() {
           iterationCount={1}
           useNativeDriver={true}
         >
-          <ScrollView style={{ flex: 1 }}>
+          <Scroll>
             <List
               horizontal
-              onPressAlbum={onPressAlbum}
+              onPressMovie={onPressMovie}
               type="circle"
               title="Mais assistidos"
               albuns={trendings}
             />
             <List
               horizontal
-              onPressAlbum={onPressAlbum}
+              onPressMovie={onPressMovie}
               type="square"
               title="Populares"
               albuns={popular}
@@ -73,16 +75,16 @@ export default function Main() {
             <List
               horizontal
               type="square"
-              onPressAlbum={onPressAlbum}
+              onPressMovie={onPressMovie}
               title="Lançamentos"
               albuns={updates}
             />
             <List
-              onPressAlbum={onPressAlbum}
+              onPressMovie={onPressMovie}
               title="Mais procurados"
               albuns={collected}
             />
-          </ScrollView>
+          </Scroll>
         </Animatable.View>
       );
     }
@@ -90,6 +92,7 @@ export default function Main() {
 
   return (
     <Container>
+      <StatusBar backgroundColor="#303030" barStyle="light-content" />
       {renderContent()}
       <Detail
         isVisible={showDetail}

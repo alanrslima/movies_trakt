@@ -1,4 +1,5 @@
 import React from 'react';
+import { Linking } from 'react-native';
 import {
   Modal,
   Container,
@@ -7,14 +8,20 @@ import {
   Image,
   TextBtnClose,
   Title,
-  Scroll
+  Scroll,
+  Description,
 } from './styles';
+import { useSelector } from 'react-redux';
+import * as Animatable from 'react-native-animatable';
+
 import Comment from '~/components/Comment';
+import Button from '~/components/Button';
 
 
 export default function Detail(props) {
 
-  const { images, movie, comments } = props.data;
+  const { images } = props.data;
+  let details = useSelector(state => state.movies.details);
 
   function getImageUri() {
     try {
@@ -22,6 +29,14 @@ export default function Detail(props) {
     } catch (error) {
       return 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQLjM8VoYMLkdsK_ttKvuYd71UQfXIjAzVZcFPSscPiCc8R-pVW';
     }
+  }
+
+  function onPressTrailler() {
+    Linking.openURL(details.about.trailer).catch(err => console.error("Couldn't load page", err));
+  }
+
+  function onPressHomepage() {
+    Linking.openURL(details.about.homepage).catch(err => console.error("Couldn't load page", err));
   }
 
   if (props.data) {
@@ -43,18 +58,31 @@ export default function Detail(props) {
                 source={{ uri: getImageUri() }}
               />
             }
-            <Title>{movie && movie.title}</Title>
-            {comments &&
-              <>
+            {details &&
+              <Animatable.View
+                animation="fadeInUp"
+                iterationCount={1}
+                useNativeDriver={true}
+              >
+                <Title>{details.about.title}</Title>
+                <Description>{details.about.overview}</Description>
+                <Button
+                  title="Watch trailler"
+                  onPress={onPressTrailler}
+                />
+                <Button
+                  title="Homepage"
+                  onPress={onPressHomepage}
+                />
                 <Title>Comments</Title>
-                {comments.map((item, i) => (
+                {details.comments.map((item, i) => (
                   <Comment
                     username={item.user.username}
                     comment={item.comment}
                     key={i}
                   />
                 ))}
-              </>
+              </Animatable.View>
             }
           </Scroll>
         </Container>

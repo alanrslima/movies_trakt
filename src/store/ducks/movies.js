@@ -5,50 +5,74 @@ import 'moment/locale/eu';
 
 // Action Types
 export const Types = {
-  RESET_CASH_LOAD: 'reset_cash_load',
+  RESET_CASH_LOAD_MOVIES: 'reset_cash_load_movies',
+  RESET_LOAD_DETAILS: 'reset_load_details',
   GET_MOVIES_TRENDING: 'get_movies_trending',
   GET_MOVIES_POPULAR: 'get_movies_popular',
   GET_MOVIES_UPDATES: 'get_movies_updates',
   GET_MOVIES_COLLECTED: 'get_movies_collected',
+  GET_MOVIE_DETAILS: 'get_movie_details',
 };
 
 
 // Reducer
 const INITIAL_STATE = {
-  cashLoad: 0,
+  cashLoadMovies: 0,
+  loadDetails: false,
+
   trendings: [],
   popular: [],
   updates: [],
   collected: [],
+  details: null,
 };
-
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case Types.RESET_CASH_LOAD:
-      return ({ ...state, cashLoad: 0 })
+    case Types.RESET_CASH_LOAD_MOVIES:
+      return ({ ...state, cashLoadMovies: 0 });
+    case Types.RESET_LOAD_DETAILS:
+      return ({ ...state, loadDetails: true, details: null });
     case Types.GET_MOVIES_TRENDING:
-      return ({ ...state, trendings: action.payload, cashLoad: state.cashLoad + 1 });
+      return ({ ...state, trendings: action.payload, cashLoadMovies: state.cashLoadMovies + 1 });
     case Types.GET_MOVIES_POPULAR:
-      return ({ ...state, popular: action.payload, cashLoad: state.cashLoad + 1 });
+      return ({ ...state, popular: action.payload, cashLoadMovies: state.cashLoadMovies + 1 });
     case Types.GET_MOVIES_UPDATES:
-      return ({ ...state, updates: action.payload, cashLoad: state.cashLoad + 1 });
+      return ({ ...state, updates: action.payload, cashLoadMovies: state.cashLoadMovies + 1 });
     case Types.GET_MOVIES_COLLECTED:
-      return ({ ...state, collected: action.payload, cashLoad: state.cashLoad + 1 });
+      return ({ ...state, collected: action.payload, cashLoadMovies: state.cashLoadMovies + 1 });
+    case Types.GET_MOVIE_DETAILS:
+      return ({ ...state, details: action.payload, loadDetails: false });
     default:
       return state;
   };
 };
 
 
+// Action Creators
 export const getMovies = () => {
   return async dispatch => {
     try {
-      dispatch({ type: Types.RESET_CASH_LOAD });
+      dispatch({ type: Types.RESET_CASH_LOAD_MOVIES });
       dispatch(getPopularMovies());
       dispatch(getTrendingMovies());
       dispatch(getUpdatesdMovies());
       dispatch(getCollectedMovies());
+    } catch (error) { }
+  }
+}
+
+export const getMovieDetail = id => {
+  return async dispatch => {
+    try {
+      dispatch({ type: Types.RESET_LOAD_DETAILS });
+      const resAbout = await apiTrakt.get(`movies/${id}?extended=full`);
+      const resComments = await apiTrakt.get(`movies/${id}/comments/sort`);
+      const data = {
+        about: resAbout.data,
+        comments: resComments.data
+      };
+      dispatch({ type: Types.GET_MOVIE_DETAILS, payload: data })
     } catch (error) { }
   }
 }
@@ -60,9 +84,11 @@ const getTrendingMovies = () => {
       var data = [];
       await asyncForEach(resTrakt.data, async item => {
         try {
-          const resComments = await apiTrakt.get(`movies/${item.movie.ids.trakt}/comments/sort`);
           const resTmdb = await apiTmdb.get(`${item.movie.ids.tmdb}/images`);
-          data.push({ movie: item.movie, images: resTmdb.data.backdrops, comments: resComments.data });
+          data.push({
+            movie: { ...item.movie, id: item.movie.ids.trakt },
+            images: resTmdb.data.backdrops,
+          });
         } catch (error) { }
       });
       dispatch({ type: Types.GET_MOVIES_TRENDING, payload: data });
@@ -79,9 +105,11 @@ const getPopularMovies = () => {
       var data = [];
       await asyncForEach(resTrakt.data, async item => {
         try {
-          const resComments = await apiTrakt.get(`movies/${item.ids.trakt}/comments/sort`);
           const resTmdb = await apiTmdb.get(`${item.ids.tmdb}/images`);
-          data.push({ movie: item, images: resTmdb.data.backdrops, comments: resComments.data });
+          data.push({
+            movie: { ...item, id: item.ids.trakt },
+            images: resTmdb.data.backdrops,
+          });
         } catch (error) { }
       });
       dispatch({ type: Types.GET_MOVIES_POPULAR, payload: data });
@@ -99,9 +127,11 @@ const getUpdatesdMovies = () => {
       var data = [];
       await asyncForEach(resTrakt.data, async item => {
         try {
-          const resComments = await apiTrakt.get(`movies/${item.movie.ids.trakt}/comments/sort`);
           const resTmdb = await apiTmdb.get(`${item.movie.ids.tmdb}/images`);
-          data.push({ movie: item.movie, images: resTmdb.data.backdrops, comments: resComments.data });
+          data.push({
+            movie: { ...item.movie, id: item.movie.ids.trakt },
+            images: resTmdb.data.backdrops,
+          });
         } catch (error) { }
       });
       dispatch({ type: Types.GET_MOVIES_UPDATES, payload: data });
@@ -118,9 +148,11 @@ const getCollectedMovies = () => {
       var data = [];
       await asyncForEach(resTrakt.data, async item => {
         try {
-          const resComments = await apiTrakt.get(`movies/${item.movie.ids.trakt}/comments/sort`);
           const resTmdb = await apiTmdb.get(`${item.movie.ids.tmdb}/images`);
-          data.push({ movie: item.movie, images: resTmdb.data.backdrops, comments: resComments.data });
+          data.push({
+            movie: { ...item.movie, id: item.movie.ids.trakt },
+            images: resTmdb.data.backdrops,
+          });
         } catch (error) { }
       });
       dispatch({ type: Types.GET_MOVIES_COLLECTED, payload: data });

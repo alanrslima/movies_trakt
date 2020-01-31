@@ -21,7 +21,7 @@ export default function List(props) {
             <Album
               {...album}
               key={i}
-              onPress={props.onPressAlbum}
+              onPress={props.onPressMovie}
               type={props.type}
             />
           ))}
@@ -32,7 +32,7 @@ export default function List(props) {
       return props.albuns.map((album, i) => (
         <Single
           {...album}
-          onPress={props.onPressAlbum}
+          onPress={props.onPressMovie}
           key={i}
         />
       ));

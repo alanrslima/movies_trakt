@@ -5,7 +5,6 @@ import { createStore, applyMiddleware } from 'redux';
 
 import reducers from './store';
 import AppContainer from './screens/Main';
-import './config/statusBar';
 
 export default function App() {
 
