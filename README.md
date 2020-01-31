@@ -50,6 +50,14 @@ or
 $ react-native run-android
 ```
 
+## Tests
+
+To run tests you only need to execute a command
+
+```
+$ yarn test
+```
+
 ## License
 
 [MIT](LICENSE.md)
