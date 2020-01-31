@@ -60,8 +60,9 @@ const getTrendingMovies = () => {
       var data = [];
       await asyncForEach(resTrakt.data, async item => {
         try {
+          const resComments = await apiTrakt.get(`movies/${item.movie.ids.trakt}/comments/sort`);
           const resTmdb = await apiTmdb.get(`${item.movie.ids.tmdb}/images`);
-          data.push({ movie: item.movie, images: resTmdb.data.backdrops });
+          data.push({ movie: item.movie, images: resTmdb.data.backdrops, comments: resComments.data });
         } catch (error) { }
       });
       dispatch({ type: Types.GET_MOVIES_TRENDING, payload: data });
@@ -78,8 +79,9 @@ const getPopularMovies = () => {
       var data = [];
       await asyncForEach(resTrakt.data, async item => {
         try {
+          const resComments = await apiTrakt.get(`movies/${item.ids.trakt}/comments/sort`);
           const resTmdb = await apiTmdb.get(`${item.ids.tmdb}/images`);
-          data.push({ movie: item, images: resTmdb.data.backdrops });
+          data.push({ movie: item, images: resTmdb.data.backdrops, comments: resComments.data });
         } catch (error) { }
       });
       dispatch({ type: Types.GET_MOVIES_POPULAR, payload: data });
@@ -97,8 +99,9 @@ const getUpdatesdMovies = () => {
       var data = [];
       await asyncForEach(resTrakt.data, async item => {
         try {
+          const resComments = await apiTrakt.get(`movies/${item.movie.ids.trakt}/comments/sort`);
           const resTmdb = await apiTmdb.get(`${item.movie.ids.tmdb}/images`);
-          data.push({ movie: item.movie, images: resTmdb.data.backdrops });
+          data.push({ movie: item.movie, images: resTmdb.data.backdrops, comments: resComments.data });
         } catch (error) { }
       });
       dispatch({ type: Types.GET_MOVIES_UPDATES, payload: data });
@@ -115,8 +118,9 @@ const getCollectedMovies = () => {
       var data = [];
       await asyncForEach(resTrakt.data, async item => {
         try {
+          const resComments = await apiTrakt.get(`movies/${item.movie.ids.trakt}/comments/sort`);
           const resTmdb = await apiTmdb.get(`${item.movie.ids.tmdb}/images`);
-          data.push({ movie: item.movie, images: resTmdb.data.backdrops });
+          data.push({ movie: item.movie, images: resTmdb.data.backdrops, comments: resComments.data });
         } catch (error) { }
       });
       dispatch({ type: Types.GET_MOVIES_COLLECTED, payload: data });
