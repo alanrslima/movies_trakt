@@ -16,9 +16,11 @@ export default function Album(props) {
         <Circle
           onPress={() => props.onPress(props)}
         >
-          <Image
-            uri={props.images.length ? `https://image.tmdb.org/t/p/w500/${props.images[0].file_path}` : ''}
-          />
+          {props.images.length ?
+            <Image
+              uri={`https://image.tmdb.org/t/p/w500/${props.images[0].file_path}`}
+            /> : null
+          }
         </Circle>
       )
     } else if (props.type === 'square') {
@@ -26,9 +28,11 @@ export default function Album(props) {
         <Square
           onPress={() => props.onPress(props)}
         >
-          <Image
-            uri={props.images.length ? `https://image.tmdb.org/t/p/w500/${props.images[0].file_path}` : ''}
-          />
+          {props.images.length ?
+            <Image
+              uri={`https://image.tmdb.org/t/p/w500/${props.images[0].file_path}`}
+            /> : null
+          }
         </Square>
       );
     }

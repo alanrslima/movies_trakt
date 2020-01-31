@@ -19,7 +19,7 @@ import {
 
 export default function Main() {
 
-  let dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   let popular = useSelector(state => state.movies.popular);
   let trendings = useSelector(state => state.movies.trendings);

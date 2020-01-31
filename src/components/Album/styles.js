@@ -5,7 +5,7 @@ export const Square = styled.TouchableOpacity.attrs(props => ({
 }))`
   height: 120px;
   width: 100px;
-  background-color: #CCC;
+  background-color: #888;
   border-radius: 10px;
   overflow: hidden;  
 `;
@@ -38,6 +38,6 @@ export const Circle = styled.TouchableOpacity.attrs(props => ({
   height: 100px;
   overflow: hidden;
   width: 100px;
-  background-color: #CCC;
+  background-color: #888;
   border-radius: 60px;
 `;
